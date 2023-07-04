@@ -13,7 +13,7 @@ public class GenericUtils {
         this.driver = driver;
     }
 
-    public void SwitchWindowToChild(){
+    public void SwitchWindowToChild() throws InterruptedException {
 
         String currentWindowhandle = driver.getWindowHandle();
         Set<String> handles = driver.getWindowHandles();
@@ -24,6 +24,7 @@ public class GenericUtils {
             if(!currentWindowhandle.equals(child_window)){
                 driver.switchTo().window(child_window);
                 System.out.println(driver.switchTo().window(child_window).getTitle());
+                Thread.sleep(2000);
             }
         }
     }
