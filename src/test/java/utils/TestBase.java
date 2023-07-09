@@ -1,22 +1,18 @@
 package utils;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import java.io.*;
+import java.net.URL;
 import java.util.Properties;
 
 public class TestBase {
+    public static int counter = 0;
 
-    public WebDriver driver;
+    public RemoteWebDriver driver;
 
-    public WebDriver WebDriverManager() throws IOException {
-
+    public RemoteWebDriver WebDriverManager() throws IOException, InterruptedException {
 
         FileInputStream fis = new FileInputStream(System.getProperty("user.dir")+"//src//test//resources//global.properties");
         Properties prop = new Properties();
@@ -36,7 +32,18 @@ public class TestBase {
 
         if(driver==null) {
 
-            if(browser.equalsIgnoreCase("chrome"))
+
+            URL u=new URL("http://localhost:4444/wd/hub");
+            Thread.sleep(10000);
+//            ChromeOptions options = new ChromeOptions();
+//            options.addArguments("--window-position=0,0");
+//            options.addArguments("--window-size=1840,1080");
+//            options.addArguments("--no-sandbox");
+//            options.addArguments("--disable-gpu");
+            driver = new RemoteWebDriver(u,new ChromeOptions());
+            //driver = new RemoteWebDriver(u,new FirefoxOptions());
+
+            /*if(browser.equalsIgnoreCase("chrome"))
             {
                 System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"//src//test//resources//chromedriver.exe");
                 driver = new ChromeDriver();
@@ -57,12 +64,16 @@ public class TestBase {
                 driver=new EdgeDriver();
             }
 
-
+ */
             driver.get(url);
             //driver.get("https://www.dhampursugar.com/");
+
+
             driver.manage().window().maximize();
         }
 
         return driver;
     }
+
+
 }

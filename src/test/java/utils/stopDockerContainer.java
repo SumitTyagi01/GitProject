@@ -8,17 +8,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Calendar;
 
-public class startDockerContainer {
+public class stopDockerContainer {
 
-    public void startFile() throws IOException, InterruptedException {
-        File file=new File("output.txt");
-        if(file.delete()){
-            System.out.println("File is deleted successfully!!");
-        }
-
+    public void stopFile() throws IOException, InterruptedException {
         boolean flag = false;
         Runtime runtime = Runtime.getRuntime();
-        runtime.exec("cmd /c start dockerUp.bat");
+        runtime.exec("cmd /c start dockerDown.bat");
 
         Thread.sleep(4000);
         String f = System.getProperty("user.dir")+"//output.txt";
@@ -39,7 +34,7 @@ public class startDockerContainer {
 
             while (currentLine != null && !flag) {
 
-                if (currentLine.contains("Node has been added")) {
+                if (currentLine.contains("Shutdown complete")) {
                     System.out.println("found my text!!");
                     flag = true;
                     break;
@@ -50,8 +45,11 @@ public class startDockerContainer {
 
         }
         Assert.assertTrue(flag);
-        runtime.exec("cmd /c start scale.bat");
-        Thread.sleep(15000);
+        File file=new File("output.txt");
+        if(file.delete()){
+            System.out.println("File is deleted successfully!!");
+        }
+
     }
 
 }
